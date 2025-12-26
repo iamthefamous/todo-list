@@ -1,0 +1,13 @@
+FROM python:3.12
+
+# Ensure up-to-date CA certificates for TLS connections (Atlas requires TLS)
+RUN apt-get update -y && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
+
+EXPOSE 3001
+
+CMD [ "python", "./src/server.py" ]
